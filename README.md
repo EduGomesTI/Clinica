@@ -20,6 +20,7 @@ consultas. Estas notificações podem ser via e-mail.
 - Cada consulta tem uma duração fixa de 30 minutos.
 - O padrão para exibição do horário das consultas é xxhxx, ex: 07h30, 18h00, etc.
 - O horário para agendamento de consultas é de Segunda a Sábado das 07h00 até às 21h00.
+- UMa consulta não pode ser excluída, apenas cancelada.
 - O endereço dos pacientes será simplificado.
 
 ## Requisitos Não Funcionais Obrigatórios ##
@@ -48,7 +49,7 @@ consultas. Estas notificações podem ser via e-mail.
 - A persistência de dados será implementada com o pattern Repository.
 - A criação dos objetos será feito com o pattern Factory dentro de suas respectivas classes.
 - Na medida do possível cada classe implementará todas as suas regras de negócios e validações.
-- As validações dos Dtos será feita na camada Application com exceção da Main.
+- As validações dos Dtos será feita na camada Application.
 
 ## Endpoints ##
 
@@ -58,7 +59,7 @@ consultas. Estas notificações podem ser via e-mail.
 POST /api/v1/patient/
 {
   "name": string,
-  "bornDate": DateTime,
+  "birthDate": DateTime,
   "email": string,
   "phone": string,
   "address": string
@@ -69,7 +70,7 @@ PATCH /api/v1/patient/
 {
   "id": GUID
   "name": string,
-  "bornDate": DateTime,
+  "birthDate": DateTime,
   "email": string,
   "phone": string,
   "address": string
@@ -88,6 +89,7 @@ GET /api/v1/patient/?id
 ```
 GET /api/v1/patient
 ```
+
 ### Agendamento ###
 
 ```
@@ -95,8 +97,7 @@ POST /api/v1/scheduling/
 {
   "idPatient": GUID,
   "idDoctor": GUID,
-  "dayScheduling": byte,
-  "hourScheduling": string
+  "dateScheduling": DateTime
 }
 ```
 ```
@@ -105,13 +106,9 @@ PATCH /api/v1/scheduling/
   "id": GUID,
   "idPatient": GUID,
   "idDoctor": GUID,
-  "dayScheduling": byte,
-  "hourScheduling": string,
+  "dateScheduling": DateTime,
   "status": string
 }
-```
-```
-GET /api/v1/scheduling/?id
 ```
 ```
 GET /api/v1/scheduling/?idPatient
@@ -122,25 +119,32 @@ GET /api/v1/scheduling/?idDoctor
 ```
 GET /api/v1/scheduling
 ```
+
 ### Medicos ###
 
 ```
 POST /api/v1/doctor/
 {
   "name": string,
-  "bornDate": DateTime,
+  "cmr": string,
+  "birthDate": DateTime,
   "email": string,
   "phone": string,
   "address": string
+  "idSpecialty": Guid
 }
 ```
 ```
 PATCH /api/v1/doctor/
 {
-  "id": GUID
+  "id": GUID,
   "name": string,
-  "crm": string,
-  "idSpecialty: GUID
+  "cmr": string,
+  "birthDate": DateTime,
+  "email": string,
+  "phone": string,
+  "address": string
+  "idSpecialty": Guid
 }
 ```
 ```
@@ -172,13 +176,6 @@ PATCH /api/v1/specialty/
 }
 ```
 ```
-(Delete/Undelete) PATCH /api/v1/specialty/
-{
-  "idSpecialty": GUID,
-  "isDeleted": bool
-}
-```
-```
 GET /api/v1/specialty/?id
 ```
 ```
@@ -189,12 +186,8 @@ GET /api/v1/specialty
 ```
 POST /api/v1/doctorSchedule
 {
-  [
-    {
-    "weekDay": string,
-    "hoursDay": [string]
-    }
-  ]
+  "weekDay": string,
+  "hourDay": string
 }
 ```
 ```
@@ -211,9 +204,6 @@ PATCH /api/v1/doctorSchedule/
   "idDoctorSchedule": GUID,
   "isDeleted": bool
 }
-```
-```
-GET /api/v1/doctorSchedule/?id
 ```
 ```
 GET /api/v1/doctorSchedule/?idDoctor
