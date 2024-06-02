@@ -1,4 +1,7 @@
-﻿namespace Clinica.Base.Domain
+﻿using FluentValidation.Results;
+using System.ComponentModel.DataAnnotations;
+
+namespace Clinica.Base.Domain
 {
     public readonly struct ValueErrorDetail
     {
@@ -21,5 +24,18 @@
         {
             return new ValueErrorDetail(description);
         }
+
+        public static List<ValueErrorDetail> FromValidationFailures(IEnumerable<ValidationFailure> errors)
+        {
+            List<ValueErrorDetail> errorsDetails = new();
+            foreach (var error in errors)
+            {
+                var errorDetail = new ValueErrorDetail(error.ErrorMessage, error.ErrorCode);
+                errorsDetails.Add(errorDetail);
+            }
+
+            return errorsDetails;
+        }
+
     }
 }

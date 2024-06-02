@@ -4,6 +4,6 @@ using MediatR;
 namespace Clinica.Main.Application.Patients.Commands
 {
     public sealed record SoftDeletePatientCommand(
-        Guid IdPatient,
+        Guid Id,
         bool IsDeleted) : IRequest<ValueResult>;
 }

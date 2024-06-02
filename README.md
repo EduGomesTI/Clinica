@@ -68,7 +68,7 @@ POST /api/v1/patient/
 ```
 PATCH /api/v1/patient/
 {
-  "id": GUID
+  "id": Guid
   "name": string,
   "birthDate": DateTime,
   "email": string,
@@ -79,7 +79,7 @@ PATCH /api/v1/patient/
 ```
 (Delete/Undelete) PATCH /api/v1/patient/
 {
-  "idPatient": GUID,
+  "idPatient": Guid,
   "isDeleted": bool
 }
 ```
@@ -95,17 +95,17 @@ GET /api/v1/patient
 ```
 POST /api/v1/scheduling/
 {
-  "idPatient": GUID,
-  "idDoctor": GUID,
+  "idPatient": Guid,
+  "idDoctor": Guid,
   "dateScheduling": DateTime
 }
 ```
 ```
 PATCH /api/v1/scheduling/
 {
-  "id": GUID,
-  "idPatient": GUID,
-  "idDoctor": GUID,
+  "id": Guid,
+  "idPatient": Guid,
+  "idDoctor": Guid,
   "dateScheduling": DateTime,
   "status": string
 }
@@ -137,7 +137,7 @@ POST /api/v1/doctor/
 ```
 PATCH /api/v1/doctor/
 {
-  "id": GUID,
+  "id": Guid,
   "name": string,
   "cmr": string,
   "birthDate": DateTime,
@@ -150,7 +150,7 @@ PATCH /api/v1/doctor/
 ```
 (Delete/Undelete) PATCH /api/v1/doctor/
 {
-  "idDoctor": GUID,
+  "id": Guid,
   "isDeleted": bool
 }
 ```
@@ -171,7 +171,7 @@ POST /api/v1/specialty
 ```
 PATCH /api/v1/specialty/
 {
-  "id": GUID,
+  "id": Guid,
   "specialty" : string
 }
 ```
@@ -186,6 +186,7 @@ GET /api/v1/specialty
 ```
 POST /api/v1/doctorSchedule
 {
+  "idDoctor": Guid
   "weekDay": string,
   "hourDay": string
 }
@@ -193,7 +194,8 @@ POST /api/v1/doctorSchedule
 ```
 PATCH /api/v1/doctorSchedule/
 {
-  "idDoctorSchedule": GUID
+  "id": Guid
+  "idDoctor": Guid
   "weekDay": string,
   "hourDay": string
 }
@@ -201,7 +203,7 @@ PATCH /api/v1/doctorSchedule/
 ```
 (Delete/Undelete) PATCH /api/v1/doctorSchedule/
 {
-  "idDoctorSchedule": GUID,
+  "id": Guid,
   "isDeleted": bool
 }
 ```

@@ -1,6 +1,26 @@
 version: '3.9'
 
 services:
+  webapi:
+      image: clinica.webapi:latest
+      container_name: webapi_container
+      build:
+        context: .
+        dockerfile: Clinica.Main.WebApi/Dockerfile
+      environment:
+        - RabbitMq__HostName=rabbitmq
+        - RabbitMq__User=admin
+        - RabbitMq__Password=1234
+      ports:
+        - "8080:8080"
+        - "8081:8081"
+      networks:
+        - clinica_net
+      depends_on:
+        rabbitmq:
+            condition: service_healthy
+      restart: always
+
   postgres:
     container_name: postgres_container
     image: postgres
@@ -16,24 +36,9 @@ services:
       - clinica_net
     restart: unless-stopped
 
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-    ports:
-      - "${PGADMIN_PORT:-5050}:80"
-    networks:
-      - clinica_net
-    restart: unless-stopped
-
-  localhost:
+  rabbitmq:
     image: rabbitmq:3-management
-    hostname: "localhost"
+    hostname: "rabbitmq"
     labels:
       NAME: "rabbitmq"
     ports:
@@ -53,23 +58,22 @@ services:
       timeout: 5s
       retries: 5
 
-  webapi:
-      image: clinica.webapi:latest
-      container_name: webapi_container
-      build:
-        context: .
-        dockerfile: Clinica.Main.WebApi\Dockerfile
-      environment:
-        - RabbitMq__HostName=localhost
-      ports:
-        - "8080:8080"
-        - "8081:8081"
-      networks:
-        - clinica_net
-      depends_on:
-        localhost:
-            condition: service_healthy
-      restart: always
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - clinica_net
+    restart: unless-stopped
+
+
 
 networks:
   clinica_net:
