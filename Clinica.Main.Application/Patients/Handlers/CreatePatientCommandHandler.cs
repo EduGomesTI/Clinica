@@ -1,5 +1,6 @@
 ﻿using Clinica.Base.Domain;
 using Clinica.Base.Infrastructure.Brokes.RabbitMq;
+using Clinica.Base.Infrastructure.Consts;
 using Clinica.Main.Application.Patients.Commands;
 using FluentValidation;
 using MediatR;
@@ -9,7 +10,8 @@ namespace Clinica.Main.Application.Patients.Handlers
 {
     internal sealed class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand, ValueResult>
     {
-        private const string QUEUE = "create-patient";
+        private const string QUEUE = MessageConstants.patient_create;
+
         private readonly ILogger<CreatePatientCommandHandler> _logger;
         private readonly IMessageService _message;
         private readonly IValidator<CreatePatientCommand> _validator;

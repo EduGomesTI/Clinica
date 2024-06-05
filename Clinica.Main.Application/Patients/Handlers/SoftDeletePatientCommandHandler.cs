@@ -1,5 +1,6 @@
 ﻿using Clinica.Base.Domain;
 using Clinica.Base.Infrastructure.Brokes.RabbitMq;
+using Clinica.Base.Infrastructure.Consts;
 using Clinica.Main.Application.Patients.Commands;
 using FluentValidation;
 using MediatR;
@@ -9,7 +10,7 @@ namespace Clinica.Main.Application.Patients.Handlers
 {
     internal sealed class SoftDeletePatientCommandHandler : IRequestHandler<SoftDeletePatientCommand, ValueResult>
     {
-        private const string QUEUE = "softDelete-patient";
+        private const string QUEUE = MessageConstants.patient_delete;
 
         private readonly ILogger<SoftDeletePatientCommandHandler> _logger;
         private readonly IMessageService _message;

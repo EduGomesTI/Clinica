@@ -1,5 +1,6 @@
 ﻿using Clinica.Base.Infrastructure.Options;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Text;
 
@@ -29,18 +30,11 @@ namespace Clinica.Base.Infrastructure.Brokes.RabbitMq
 
         public void Publish<T>(T message, string queue)
         {
-            using var channel = _conn.CreateModel();
-            channel.QueueDeclare(
-                queue: queue,
-                durable: false,
-                exclusive: false,
-                autoDelete: false,
-                arguments: null
-                );
+            using IModel channel = CreateChannel(queue);
 
-            string? stringMessage = message!.ToString();
+            string? jsonMessage = JsonConvert.SerializeObject(message);
 
-            var byteArray = Encoding.UTF8.GetBytes(stringMessage!);
+            var byteArray = Encoding.UTF8.GetBytes(jsonMessage!);
 
             channel.BasicPublish(
             exchange: "",
@@ -48,6 +42,19 @@ namespace Clinica.Base.Infrastructure.Brokes.RabbitMq
             basicProperties: null,
             body: byteArray
             );
+        }
+
+        private IModel CreateChannel(string queue)
+        {
+            var channel = _conn.CreateModel();
+            channel.QueueDeclare(
+                queue: queue,
+                durable: false,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null
+                );
+            return channel;
         }
     }
 }

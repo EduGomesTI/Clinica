@@ -6,7 +6,7 @@ namespace Clinica.Patients.Domain.Aggregates
     {
         public string? Name { get; private set; }
 
-        public DateTime? BirthDate { get; private set; }
+        public DateTime BirthDate { get; private set; }
 
         public string? Email { get; private set; }
 
@@ -14,7 +14,10 @@ namespace Clinica.Patients.Domain.Aggregates
 
         public string? Address { get; private set; }
 
-        private Patient() { }
+        public bool IsDeleted { get; private set; }
+
+        private Patient()
+        { }
 
         public static ValueResult<Patient> Create(
             string name,
@@ -28,7 +31,7 @@ namespace Clinica.Patients.Domain.Aggregates
             if (string.IsNullOrWhiteSpace(name))
                 errors.Add(new ValueErrorDetail("Name", "Nome é obrigatório"));
 
-            if (birthDate == DateTime.MinValue || birthDate == DateTime.Now )
+            if (birthDate == DateTime.MinValue || birthDate == DateTime.Now)
             {
                 errors.Add(new ValueErrorDetail("Birthdate", $"Data de nascimento inválido: {birthDate.ToString()}"));
             }
@@ -39,7 +42,7 @@ namespace Clinica.Patients.Domain.Aggregates
             if (string.IsNullOrWhiteSpace(phone))
                 errors.Add(new ValueErrorDetail("Phone", "Telefone é obrigatório"));
 
-            return errors.Any()
+            return errors.Count != 0
                 ? ValueResult<Patient>.Failure(errors)
                 : ValueResult<Patient>.Success(new Patient
                 {
@@ -47,8 +50,39 @@ namespace Clinica.Patients.Domain.Aggregates
                     BirthDate = birthDate,
                     Email = email,
                     Phone = phone,
-                    Address = address
+                    Address = address,
+                    IsDeleted = false
                 });
+        }
+
+        public void UpdateName(string name)
+        {
+            Name = name;
+        }
+
+        public void UpdateBirthDate(DateTime birthDate)
+        {
+            BirthDate = birthDate;
+        }
+
+        public void UpdateEmail(string email)
+        {
+            Email = email;
+        }
+
+        public void UpdatePhone(string phone)
+        {
+            Phone = phone;
+        }
+
+        public void UpdateAddress(string address)
+        {
+            Address = address;
+        }
+
+        public void SofDelete(bool isDeleted)
+        {
+            IsDeleted = isDeleted;
         }
     }
 }

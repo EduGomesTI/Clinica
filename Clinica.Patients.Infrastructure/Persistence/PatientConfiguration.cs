@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Clinica.Patients.Infrastructure.Persistence
 {
     internal sealed class PatientConfiguration : IEntityTypeConfiguration<Patient>
-    { 
+    {
         public void Configure(EntityTypeBuilder<Patient> builder)
         {
             builder.ToTable("Patients");
@@ -36,7 +36,10 @@ namespace Clinica.Patients.Infrastructure.Persistence
             builder.Property(x => x.Address)
                 .HasColumnName("Address")
                 .HasColumnType("varchar(100)");
-                
+
+            builder.Property(x => x.IsDeleted)
+                .HasColumnName("IsDeleted")
+                .IsRequired();
         }
     }
 }

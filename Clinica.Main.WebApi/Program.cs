@@ -19,6 +19,8 @@ builder.Services
     //.AddMassTransitExtension(builder.Configuration)
     .AddRabbitMqExtension();
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,6 +31,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UsePresentation();
+
+app.UseHealthChecks("/health");
 
 app.UseHttpsRedirection();
 

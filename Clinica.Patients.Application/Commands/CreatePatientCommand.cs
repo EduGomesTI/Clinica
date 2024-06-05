@@ -3,11 +3,10 @@ using MediatR;
 
 namespace Clinica.Main.Application.Patients.Commands
 {
-    public sealed record UpdatePatientCommand(
-        Guid Id,
+    public sealed record CreatePatientCommand(
         string Name,
         DateTime BirthDate,
         string Email,
         string Phone,
-        string Address) : IRequest<ValueResult>;
+        string Adrress) : IRequest<ValueResult>;
 }

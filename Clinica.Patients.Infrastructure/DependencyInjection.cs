@@ -3,6 +3,9 @@ using Clinica.Patients.Infrastructure.Persistence;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
+using Clinica.Base.Application;
+using Clinica.Patients.Application.Abstractions;
+using Clinica.Patients.Domain.Repositories;
 
 namespace Clinica.Patients.Infrastructure
 {
@@ -30,6 +33,10 @@ namespace Clinica.Patients.Infrastructure
 
                 dbContextOptionsBuilder.EnableSensitiveDataLogging(databseOptions.EnabledSensitiveDataLogging);
             });
+
+            services.AddScoped<IPatientRepository, PatientRepository>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

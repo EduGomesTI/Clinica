@@ -8,7 +8,6 @@ namespace Clinica.Main.Application.Patients.Validators
         public SoftDeletePatientCommandValidator()
         {
             RuleFor(x => x.Id).NotEmpty().NotNull().WithMessage("Id Não pode ficar nulo");
-            RuleFor(x => x.IsDeleted).NotEmpty().NotNull().WithMessage("IsDeleted é obrigatório");
         }
     }
 }
