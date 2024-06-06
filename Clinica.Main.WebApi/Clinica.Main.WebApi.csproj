@@ -19,7 +19,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Clinica.Base\Clinica.Base.csproj" />
     <ProjectReference Include="..\Clinica.Main.Application\Clinica.Main.Application.csproj" />
-    <ProjectReference Include="..\Clinica.Main.Domain\Clinica.Main.Domain.csproj" />
     <ProjectReference Include="..\Clinica.Main.Infrastrucure\Clinica.Main.Infrastructure.csproj" />
     <ProjectReference Include="..\Clinica.Main.Presentation\Clinica.Main.Presentation.csproj" />
   </ItemGroup>

@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DoctorsSchedule\" />
     <Folder Include="Doctors\" />
     <Folder Include="Patients\" />
     <Folder Include="Schedulings\" />

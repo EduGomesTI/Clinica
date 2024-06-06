@@ -2,8 +2,6 @@
 using Clinica.Base.Infrastructure;
 using Clinica.Main.Application.Doctors.Commands;
 using Clinica.Main.Application.Doctors.Validators;
-using Clinica.Main.Application.DoctorsSchedule.Commands;
-using Clinica.Main.Application.DoctorsSchedule.Validators;
 using Clinica.Main.Application.Patients.Commands;
 using Clinica.Main.Application.Patients.Validators;
 using Clinica.Main.Application.Schedulings.Commands;
@@ -38,10 +36,6 @@ namespace Clinica.Main.Application
             services.AddScoped<IValidator<CreateDoctorCommand>, CreateDoctorCommandValidator>();
             services.AddScoped<IValidator<UpdateDoctorCommand>, UpdateDoctorCommandValidator>();
             services.AddScoped<IValidator<SoftDeleteDoctorCommand>, SoftDeleteDoctorCommandValidator>();
-
-            services.AddScoped<IValidator<CreateDoctorScheduleCommand>, CreateDoctorScheduleCommandValidator>();
-            services.AddScoped<IValidator<UpdateDoctorScheduleCommand>, UpdateDoctorScheduleCommandValidator>();
-            services.AddScoped<IValidator<SoftDeleteDoctorScheduleCommand>, SoftDeleteDoctorScheduleCommandValidator>();
 
             services.AddScoped<IValidator<CreatePatientCommand>, CreatePatientCommandValidator>();
             services.AddScoped<IValidator<UpdatePatientCommand>, UpdatePatientCommandValidator>();

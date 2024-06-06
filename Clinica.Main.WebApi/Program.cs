@@ -10,13 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.ConfigureOptions<MassTransitOptionsSetup>();
 builder.Services.ConfigureOptions<RabbitMqOptionsSetup>();
 
 builder.Services
     .AddPresentation()
     .AddApplication()
-    //.AddMassTransitExtension(builder.Configuration)
     .AddRabbitMqExtension();
 
 builder.Services.AddHealthChecks();
