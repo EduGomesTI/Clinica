@@ -32,6 +32,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinica.Patients.Domain", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinica.Patients.Infrastructure", "Clinica.Patients.Infrastructure\Clinica.Patients.Infrastructure.csproj", "{D71DE3DE-F222-4EF7-BCED-7A7231859988}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clinica.Doctors", "Clinica.Doctors", "{1F25AD95-EC97-4641-81A8-3F5B5F5C5F2D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinica.Doctors.Worker", "Clinica.Doctors.Worker\Clinica.Doctors.Worker.csproj", "{2DC40491-314F-4D0A-A91B-787F3798F27C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clinica.Doctors.Application", "Clinica.Doctors.Application\Clinica.Doctors.Application.csproj", "{86B5D6CF-6108-441A-A3AA-6AD56CBB70D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clinica.Doctors.Domain", "Clinica.Doctors.Domain\Clinica.Doctors.Domain.csproj", "{3C7C4CBB-D647-40FB-BA54-30FDD3EBCA47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clinica.Doctors.Infrastructure", "Clinica.Doctors.Infrastructure\Clinica.Doctors.Infrastructure.csproj", "{28448150-4D84-422C-A468-12CA9AAA61F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +84,22 @@ Global
 		{D71DE3DE-F222-4EF7-BCED-7A7231859988}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D71DE3DE-F222-4EF7-BCED-7A7231859988}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D71DE3DE-F222-4EF7-BCED-7A7231859988}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DC40491-314F-4D0A-A91B-787F3798F27C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DC40491-314F-4D0A-A91B-787F3798F27C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DC40491-314F-4D0A-A91B-787F3798F27C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DC40491-314F-4D0A-A91B-787F3798F27C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86B5D6CF-6108-441A-A3AA-6AD56CBB70D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86B5D6CF-6108-441A-A3AA-6AD56CBB70D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86B5D6CF-6108-441A-A3AA-6AD56CBB70D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86B5D6CF-6108-441A-A3AA-6AD56CBB70D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C7C4CBB-D647-40FB-BA54-30FDD3EBCA47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C7C4CBB-D647-40FB-BA54-30FDD3EBCA47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C7C4CBB-D647-40FB-BA54-30FDD3EBCA47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C7C4CBB-D647-40FB-BA54-30FDD3EBCA47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28448150-4D84-422C-A468-12CA9AAA61F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28448150-4D84-422C-A468-12CA9AAA61F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28448150-4D84-422C-A468-12CA9AAA61F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28448150-4D84-422C-A468-12CA9AAA61F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +114,10 @@ Global
 		{67137EBB-3403-4CD1-86FF-E660E8C12BAF} = {736737FA-4D50-46C4-B930-C10AE659F815}
 		{A599F5EC-C062-43DA-A171-41CCECE1D0D5} = {736737FA-4D50-46C4-B930-C10AE659F815}
 		{D71DE3DE-F222-4EF7-BCED-7A7231859988} = {736737FA-4D50-46C4-B930-C10AE659F815}
+		{2DC40491-314F-4D0A-A91B-787F3798F27C} = {1F25AD95-EC97-4641-81A8-3F5B5F5C5F2D}
+		{86B5D6CF-6108-441A-A3AA-6AD56CBB70D2} = {1F25AD95-EC97-4641-81A8-3F5B5F5C5F2D}
+		{3C7C4CBB-D647-40FB-BA54-30FDD3EBCA47} = {1F25AD95-EC97-4641-81A8-3F5B5F5C5F2D}
+		{28448150-4D84-422C-A468-12CA9AAA61F9} = {1F25AD95-EC97-4641-81A8-3F5B5F5C5F2D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2978E7FA-94B8-4360-AEBE-6FA4C4209142}

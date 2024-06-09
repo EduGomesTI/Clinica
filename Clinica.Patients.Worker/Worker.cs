@@ -12,17 +12,13 @@ namespace Clinica.Patients.Worker
 {
     public class Worker : BackgroundService
     {
-        private readonly ILogger<Worker> _logger;
         private readonly IModel _channel;
-        private readonly ISender _mediat;
         private readonly IServiceScopeFactory _scopeFactory;
 
         public Worker(
-            ILogger<Worker> logger,
             IOptions<RabbitMqOptions> options,
             IServiceScopeFactory scopeFactory)
         {
-            _logger = logger;
             var _options = options;
 
             var factory = new ConnectionFactory
@@ -41,12 +37,15 @@ namespace Clinica.Patients.Worker
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
+            await Task.Run(() =>
             {
-                CreatePatient(_channel);
-                UpdatePatient(_channel);
-                DeletePatient(_channel);
-            }
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    CreatePatient(_channel);
+                    UpdatePatient(_channel);
+                    DeletePatient(_channel);
+                }
+            }, stoppingToken);
         }
 
         private void DeletePatient(IModel channel)

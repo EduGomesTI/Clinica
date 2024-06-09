@@ -1,42 +1,42 @@
 # version: '3.9'
 
 services:
-  webapi:
-      image: clinica.webapi:latest
-      container_name: webapi
-      build:
-        context: .
-        dockerfile: Clinica.Main.WebApi/Dockerfile
-      environment:
-        - RabbitMq__HostName=rabbitmq
-        - RabbitMq__User=admin
-        - RabbitMq__Password=1234
-      ports:
-        - "8080:8080"
-        - "8081:8081"
-      networks:
-        - clinica_net
-      depends_on:
-        rabbitmq:
-            condition: service_healthy
-      restart: always
+  # webapi:
+  #     image: clinica.webapi:latest
+  #     container_name: webapi
+  #     build:
+  #       context: .
+  #       dockerfile: Clinica.Main.WebApi/Dockerfile
+  #     environment:
+  #       - RabbitMq__HostName=rabbitmq
+  #       - RabbitMq__User=admin
+  #       - RabbitMq__Password=1234
+  #     ports:
+  #       - "8080:8080"
+  #       - "8081:8081"
+  #     networks:
+  #       - clinica_net
+  #     depends_on:
+  #       rabbitmq:
+  #           condition: service_healthy
+  #     restart: always
 
-  PatientsWorker:
-    image: clinica.patients_worker:latest
-    container_name: patients_worker
-    build:
-      context: .
-      dockerfile: Clinica.Patients.Worker/Dockerfile
-    environment:
-      - RabbitMq__HostName=rabbitmq
-      - RabbitMq__User=admin
-      - RabbitMq__Password=1234
-    networks:
-      - clinica_net
-    depends_on:
-      webapi:
-          condition: service_started
-    restart: always
+  # PatientsWorker:
+  #   image: clinica.patients_worker:latest
+  #   container_name: patients_worker
+  #   build:
+  #     context: .
+  #     dockerfile: Clinica.Patients.Worker/Dockerfile
+  #   environment:
+  #     - RabbitMq__HostName=rabbitmq
+  #     - RabbitMq__User=admin
+  #     - RabbitMq__Password=1234
+  #   networks:
+  #     - clinica_net
+  #   depends_on:
+  #     webapi:
+  #         condition: service_started
+  #   restart: always
 
   postgres:
     container_name: postgres_container

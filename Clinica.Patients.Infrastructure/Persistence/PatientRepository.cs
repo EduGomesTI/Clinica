@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Clinica.Patients.Infrastructure.Persistence
 {
-    internal sealed class PatientRepository : IPatientRepository
+    internal class PatientRepository : IPatientRepository
     {
         private readonly PatientDbContext _context;
 
@@ -13,36 +13,41 @@ namespace Clinica.Patients.Infrastructure.Persistence
             _context = context;
         }
 
-        public async Task CreateAsync(Patient patient, CancellationToken cancellationToken)
+        public async Task CreateAsync(Patient entity, CancellationToken cancellationToken)
         {
-            await _context.AddAsync(patient, cancellationToken);
+            await _context.Patients.AddAsync(entity, cancellationToken);
         }
 
-        public void Delete(Guid patientId)
+        public void Delete(Guid entityId)
         {
-            var patient = FindPatient(patientId);
-            patient?.SofDelete(true);
+            var entity = Find(entityId);
+            entity?.SofDelete(true);
+            _context.Entry(entity!).State = EntityState.Modified;
         }
 
-        public void Undelete(Guid patientId)
+        public bool Exist(Guid entityId)
         {
-            var patient = FindPatient(patientId);
-            patient?.SofDelete(false);
+            return _context.Patients.Any(e => e.Id == entityId);
         }
 
-        public void Update(Patient patient)
+        public Patient? Find(Guid entityId)
         {
-            _context.Entry(patient).State = EntityState.Modified;
+            return _context
+                .Patients
+                .AsNoTracking()
+                .FirstOrDefault(e => e.Id == entityId);
         }
 
-        public bool ExistPatient(Guid patientId)
+        public void Undelete(Guid entityId)
         {
-            return _context.Patients.Any(p => p.Id == patientId);
+            var entity = Find(entityId);
+            entity?.SofDelete(false);
+            _context.Entry(entity!).State = EntityState.Modified;
         }
 
-        public Patient FindPatient(Guid patientId)
+        public void Update(Patient entity)
         {
-            return _context.Patients.FirstOrDefault(p => p.Id == patientId)!;
+            _context.Entry(entity).State = EntityState.Modified;
         }
     }
 }

@@ -49,7 +49,7 @@ consultas. Estas notificações podem ser via e-mail.
 - A persistência de dados será implementada com o pattern Repository.
 - A criação dos objetos será feito com o pattern Factory dentro de suas respectivas classes.
 - Na medida do possível cada classe implementará todas as suas regras de negócios e validações.
-- As validações dos Dtos será feita na camada Application.
+- As validações dos Dtos será feita na camada Application do módulo Main.
 
 ## Endpoints ##
 

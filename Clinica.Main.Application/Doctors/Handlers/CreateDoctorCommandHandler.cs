@@ -1,5 +1,6 @@
 ﻿using Clinica.Base.Domain;
 using Clinica.Base.Infrastructure.Brokes.RabbitMq;
+using Clinica.Base.Infrastructure.Consts;
 using Clinica.Main.Application.Doctors.Commands;
 using FluentValidation;
 using MediatR;
@@ -9,11 +10,10 @@ namespace Clinica.Main.Application.Doctors.Handlers
 {
     internal sealed class CreateDoctorCommandHandler : IRequestHandler<CreateDoctorCommand, ValueResult>
     {
-        private const string QUEUE = "create-doctor";
+        private const string QUEUE = MessageConstants.doctor_create;
         private readonly ILogger<CreateDoctorCommandHandler> _logger;
         private readonly IMessageService _message;
         private readonly IValidator<CreateDoctorCommand> _validator;
-       
 
         public CreateDoctorCommandHandler(
             ILogger<CreateDoctorCommandHandler> logger,
@@ -28,17 +28,17 @@ namespace Clinica.Main.Application.Doctors.Handlers
         public async Task<ValueResult> Handle(CreateDoctorCommand request, CancellationToken cancellationToken)
         {
             _logger.LogWarning("Validar request");
-           var validator = _validator.Validate(request);
+            var validator = _validator.Validate(request);
             if (!validator.IsValid)
             {
-                _logger.LogError("Erro de validação");                 
+                _logger.LogError("Erro de validação");
                 return ValueResult.Failure(ValueErrorDetail.FromValidationFailures(validator.Errors));
             }
 
             _logger.LogInformation($"Enviar mensagem para a fila {QUEUE}");
             _message.Publish(request, QUEUE);
 
-            return ValueResult.Success();
+            return await Task.FromResult(ValueResult.Success());
         }
     }
 }

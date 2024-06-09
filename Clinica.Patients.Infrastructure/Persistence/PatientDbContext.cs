@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Clinica.Patients.Infrastructure.Persistence
 {
-    internal class PatientDbContext : DbContext
+    public class PatientDbContext : DbContext
     {
         public PatientDbContext(DbContextOptions<PatientDbContext> options) : base(options)
         {

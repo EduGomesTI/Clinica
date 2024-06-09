@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Clinica.Base\Clinica.Base.csproj" />
     <ProjectReference Include="..\Clinica.Patients.Domain\Clinica.Patients.Domain.csproj" />
+    <ProjectReference Include="..\Clinica.Patients.Infrastructure\Clinica.Patients.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

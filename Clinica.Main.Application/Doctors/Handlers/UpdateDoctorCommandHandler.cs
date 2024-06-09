@@ -1,5 +1,6 @@
 ﻿using Clinica.Base.Domain;
 using Clinica.Base.Infrastructure.Brokes.RabbitMq;
+using Clinica.Base.Infrastructure.Consts;
 using Clinica.Main.Application.Doctors.Commands;
 using FluentValidation;
 using MediatR;
@@ -9,7 +10,7 @@ namespace Clinica.Main.Application.Doctors.Handlers
 {
     internal sealed class UpdateDoctorCommandHandler : IRequestHandler<UpdateDoctorCommand, ValueResult>
     {
-        private const string QUEUE = "update-doctor";
+        private const string QUEUE = MessageConstants.doctor_update;
         private readonly ILogger<UpdateDoctorCommandHandler> _logger;
         private readonly IMessageService _message;
         private readonly IValidator<UpdateDoctorCommand> _validator;
@@ -37,7 +38,7 @@ IValidator<UpdateDoctorCommand> validator)
             _logger.LogInformation($"Enviar mensagem para a fila {QUEUE}");
             _message.Publish(request, QUEUE);
 
-            return ValueResult.Success();
+            return await Task.FromResult(ValueResult.Success());
         }
     }
 }

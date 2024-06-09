@@ -55,29 +55,44 @@ namespace Clinica.Patients.Domain.Aggregates
                 });
         }
 
-        public void UpdateName(string name)
+        public ValueResult UpdateName(string name)
         {
+            if (string.IsNullOrWhiteSpace(name))
+                return ValueResult.Failure("Nome é obrigatório");
             Name = name;
+            return ValueResult.Success();
         }
 
-        public void UpdateBirthDate(DateTime birthDate)
+        public ValueResult UpdateBirthDate(DateTime birthDate)
         {
+            if (birthDate == DateTime.MinValue || birthDate == DateTime.Now)
+                return ValueResult.Failure("Birthdate", $"Data de nascimento inválido: {birthDate.ToString()}");
             BirthDate = birthDate;
+            return ValueResult.Success();
         }
 
-        public void UpdateEmail(string email)
+        public ValueResult UpdateEmail(string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+                return ValueResult.Failure("Email é obrigatório");
             Email = email;
+            return ValueResult.Success();
         }
 
-        public void UpdatePhone(string phone)
+        public ValueResult UpdatePhone(string phone)
         {
+            if (string.IsNullOrWhiteSpace(phone))
+                return ValueResult.Failure("Telefone é obrigatório");
             Phone = phone;
+            return ValueResult.Success();
         }
 
-        public void UpdateAddress(string address)
+        public ValueResult UpdateAddress(string address)
         {
+            if (string.IsNullOrWhiteSpace(address))
+                return ValueResult.Failure("Telefone é obrigatório");
             Address = address;
+            return ValueResult.Success();
         }
 
         public void SofDelete(bool isDeleted)

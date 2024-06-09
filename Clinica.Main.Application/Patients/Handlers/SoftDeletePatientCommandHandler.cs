@@ -39,7 +39,7 @@ namespace Clinica.Main.Application.Patients.Handlers
             _logger.LogInformation($"Enviar mensagem para a fila {QUEUE}");
             _message.Publish(request, QUEUE);
 
-            return ValueResult.Success();
+            return await Task.FromResult(ValueResult.Success());
         }
     }
 }

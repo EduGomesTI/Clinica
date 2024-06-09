@@ -1,7 +1,8 @@
-﻿using Clinica.Base.Domain;
+﻿using Clinica.Base.Application;
+using Clinica.Base.Domain;
 using Clinica.Main.Application.Patients.Commands;
-using Clinica.Patients.Application.Abstractions;
 using Clinica.Patients.Domain.Aggregates;
+using Clinica.Patients.Infrastructure.Persistence;
 using Clinica.Patients.Domain.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -12,12 +13,12 @@ namespace Clinica.Patients.Application.Handlers
     {
         private readonly IPatientRepository _repository;
         private readonly ILogger<CreatePatientCommandHandler> _logger;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork<PatientDbContext> _unitOfWork;
 
         public CreatePatientCommandHandler(
             IPatientRepository repository,
             ILogger<CreatePatientCommandHandler> logger,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork<PatientDbContext> unitOfWork)
         {
             _repository = repository;
             _logger = logger;

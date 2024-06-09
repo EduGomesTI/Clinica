@@ -1,8 +1,8 @@
-﻿using Clinica.Base.Domain;
+﻿using Clinica.Base.Application;
+using Clinica.Base.Domain;
 using Clinica.Main.Application.Patients.Commands;
-using Clinica.Patients.Application.Abstractions;
-using Clinica.Patients.Domain.Aggregates;
 using Clinica.Patients.Domain.Repositories;
+using Clinica.Patients.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -12,12 +12,12 @@ namespace Clinica.Patients.Application.Handlers
     {
         private readonly IPatientRepository _repository;
         private readonly ILogger<UpdatePatientCommandHandler> _logger;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork<PatientDbContext> _unitOfWork;
 
         public UpdatePatientCommandHandler(
             IPatientRepository repository,
             ILogger<UpdatePatientCommandHandler> logger,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork<PatientDbContext> unitOfWork)
         {
             _repository = repository;
             _logger = logger;
@@ -26,8 +26,8 @@ namespace Clinica.Patients.Application.Handlers
 
         public async Task<ValueResult> Handle(UpdatePatientCommand request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Verificnado se este paciente existe");
-            var patient = _repository.FindPatient(request.Id);
+            _logger.LogInformation("Verificando se este paciente existe");
+            var patient = _repository.Find(request.Id);
 
             if (patient is null)
             {

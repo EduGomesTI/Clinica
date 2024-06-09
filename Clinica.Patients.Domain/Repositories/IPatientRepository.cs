@@ -4,16 +4,16 @@ namespace Clinica.Patients.Domain.Repositories
 {
     public interface IPatientRepository
     {
-        Task CreateAsync(Patient patient, CancellationToken cancellationToken);
+        Task CreateAsync(Patient entity, CancellationToken cancellationToken);
 
-        void Delete(Guid patientId);
+        void Delete(Guid entityId);
 
-        void Undelete(Guid patientId);
+        void Undelete(Guid entityId);
 
-        void Update(Patient patient);
+        void Update(Patient entity);
 
-        Patient FindPatient(Guid patientId);
+        Patient? Find(Guid entityId);
 
-        bool ExistPatient(Guid patientId);
+        bool Exist(Guid entityId);
     }
 }

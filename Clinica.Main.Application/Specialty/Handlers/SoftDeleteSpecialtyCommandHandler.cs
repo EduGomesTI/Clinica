@@ -1,5 +1,6 @@
 ﻿using Clinica.Base.Domain;
 using Clinica.Base.Infrastructure.Brokes.RabbitMq;
+using Clinica.Base.Infrastructure.Consts;
 using Clinica.Main.Application.Doctors.Handlers;
 using Clinica.Main.Application.Specialty.Commands;
 using FluentValidation;
@@ -10,7 +11,7 @@ namespace Clinica.Main.Application.Specialty.Handlers
 {
     internal sealed class SoftDeleteSpecialtyCommandHandler : IRequestHandler<SoftDeleteSpecialtyCommand, ValueResult>
     {
-        private const string QUEUE = "softDelete-specialty";
+        private const string QUEUE = MessageConstants.specialty_delete;
         private readonly ILogger<UpdateDoctorCommandHandler> _logger;
         private readonly IMessageService _message;
         private readonly IValidator<SoftDeleteSpecialtyCommand> _validator;
@@ -38,7 +39,7 @@ namespace Clinica.Main.Application.Specialty.Handlers
             _logger.LogInformation($"Enviar mensagem para a fila {QUEUE}");
             _message.Publish(request, QUEUE);
 
-            return ValueResult.Success();
+            return await Task.FromResult(ValueResult.Success());
         }
     }
 }
