@@ -38,43 +38,52 @@ namespace Clinica.Schedulings.Application.Handlers
             _logger.LogWarning("Retornar Agendamento do banco.");
             var scheduling = _repository.Find(request.Id);
 
+            ValueResult<Scheduling> result = default;
+
             _logger.LogWarning("Alterar status do agendamento.");
             _ = Enum.TryParse<AppointmentStatus>(request.Status, out var status);
             switch (status)
             {
                 case AppointmentStatus.Confirmed:
-                    scheduling!.Confirm();
+                    result = scheduling!.Confirm();
                     break;
 
                 case
                     AppointmentStatus.ReScheduling:
-                    scheduling!.ChangeDateScheduling(request.DateScheduling);
+                    result = scheduling!.Reschedule(request.DateScheduling);
                     break;
 
                 case AppointmentStatus.CancelledByPatient:
-                    scheduling!.CancelByPatient();
+                    result = scheduling!.CancelByPatient();
                     break;
 
                 case AppointmentStatus.CancelledByDoctor:
-                    scheduling!.CancelByDoctor();
+                    result = scheduling!.CancelByDoctor();
                     break;
 
                 case AppointmentStatus.Completed:
-                    scheduling!.Complete();
+                    result = scheduling!.Complete();
                     break;
 
                 case AppointmentStatus.NoShow:
-                    scheduling!.NoShow();
+                    result = scheduling!.NoShow();
                     break;
+            }
+
+            var patient = await _repository.GetPatientById(scheduling!.PatientId, cancellationToken);
+            var mailScheduling = new SendMailMessage(patient!.Name!, patient.Email!, scheduling.Observation!);
+            var message = new MessagePayload<SendMailMessage>(mailScheduling);
+
+            if (result.ErrorDetails!.Count > 0)
+            {
+                _message.Publish(message, QUEUE);
+                return ValueResult.Failure(result.ErrorDetails);
             }
 
             _logger.LogWarning("Atualizar agendamento no banco.");
             _repository.Update(scheduling!);
 
             _logger.LogInformation($"Enviar mensagem para a fila {QUEUE}");
-            var patient = await _repository.GetPatientById(scheduling!.PatientId, cancellationToken);
-            var mailScheduling = new SendMailMessage(patient!.Name!, patient.Email!, scheduling.Observation!);
-            var message = new MessagePayload<SendMailMessage>(mailScheduling);
             _message.Publish(message, QUEUE);
 
             _logger.LogWarning("Salvar alterações no banco.");

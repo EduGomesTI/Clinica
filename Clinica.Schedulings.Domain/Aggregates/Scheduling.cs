@@ -66,6 +66,7 @@ namespace Clinica.Schedulings.Domain.Aggregates
         {
             if (Status != AppointmentStatus.Scheduled)
             {
+                Observation = $"Não foi possível confirmar a consulta agendada para a data {DateScheduling}. Entre em contato com a clínica.";
                 return ValueResult<Scheduling>.Failure("Você só pode confirmar uma consulta se ela estiver com o status 'Agendada'");
             }
 
@@ -74,11 +75,33 @@ namespace Clinica.Schedulings.Domain.Aggregates
             return ValueResult<Scheduling>.Success(this);
         }
 
+        public ValueResult<Scheduling> Reschedule(DateTime newDate)
+        {
+            var validStatuses = new[] { AppointmentStatus.Scheduled, AppointmentStatus.Confirmed };
+            if (!validStatuses.Contains(Status))
+            {
+                Observation = "Não foi possível remarcar a consulta. Ela não está mais agendada.";
+                return ValueResult<Scheduling>.Failure("Você só pode remarcar uma consulta se ela estiver com o status 'Agendada' ou 'Confirmada'");
+            }
+
+            var roundedDate = RoundToNearestHalfHour(newDate);
+            if (roundedDate.ErrorDetails!.Count > 0)
+            {
+                return ValueResult<Scheduling>.Failure(roundedDate.ErrorDetails);
+            }
+
+            DateScheduling = roundedDate.Value;
+            Status = AppointmentStatus.ReScheduling;
+            Observation = $"Consulta remarcada para o dia {DateScheduling}";
+            return ValueResult<Scheduling>.Success(this);
+        }
+
         public ValueResult<Scheduling> CancelByPatient()
         {
             var validStatuses = new[] { AppointmentStatus.Scheduled, AppointmentStatus.Confirmed };
             if (!validStatuses.Contains(Status))
             {
+                Observation = "Não foi possível que o paciente cancelasse a consulta. Ela não está mais agendada.";
                 return ValueResult<Scheduling>.Failure("Você só pode cancelar uma consulta se ela estiver com o status 'Agendada' ou 'Confirmada'");
             }
 
@@ -92,6 +115,7 @@ namespace Clinica.Schedulings.Domain.Aggregates
             var validStatuses = new[] { AppointmentStatus.Scheduled, AppointmentStatus.Confirmed };
             if (!validStatuses.Contains(Status))
             {
+                Observation = "Não foi possível que o médico cancelasse a consulta. Ela não está mais agendada.";
                 return ValueResult<Scheduling>.Failure("Você só pode cancelar uma consulta se ela estiver com o status 'Agendada' ou 'Confirmada'");
             }
 
@@ -104,6 +128,7 @@ namespace Clinica.Schedulings.Domain.Aggregates
         {
             if (Status != AppointmentStatus.Confirmed)
             {
+                Observation = $"Consulta na data {DateScheduling} não foi realizada.";
                 return ValueResult<Scheduling>.Failure("Você só pode realizar uma consulta se ela estiver com o status 'Confirmado'");
             }
 
@@ -114,11 +139,6 @@ namespace Clinica.Schedulings.Domain.Aggregates
 
         public ValueResult<Scheduling> NoShow()
         {
-            if (Status != AppointmentStatus.Confirmed)
-            {
-                return ValueResult<Scheduling>.Failure("Você só pode realizar uma consulta se ela estiver com o status 'Agendada'");
-            }
-
             Status = AppointmentStatus.NoShow;
             Observation = $"Você compareceu à consulta do dia {DateScheduling}.";
             return ValueResult<Scheduling>.Success(this);
