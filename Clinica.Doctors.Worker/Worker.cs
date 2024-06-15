@@ -4,6 +4,7 @@ using Clinica.Doctors.Application.Commands;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -47,7 +48,6 @@ namespace Clinica.Doctors.Worker
                     DeleteDoctor(_channel);
                     CreateSpecialty(_channel);
                     UpdateSpecialty(_channel);
-                    DeleteSpecialty(_channel);
                 }
             }, stoppingToken);
         }
@@ -64,15 +64,28 @@ namespace Clinica.Doctors.Worker
 
             var createDoctor = new EventingBasicConsumer(channel);
 
-            createDoctor.Received += (sender, eventArgs) =>
+            createDoctor.Received += async (sender, eventArgs) =>
             {
                 var body = eventArgs.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
 
                 var request = JsonConvert.DeserializeObject<CreateDoctorCommand>(message);
-                using var scope = _scopeFactory.CreateScope();
-                var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
-                mediat.Send(request!);
+
+                var retryPolicy = Policy
+                .Handle<Exception>()
+                .WaitAndRetryAsync(5, retryAttempt =>
+                TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                (exception, timeSpan, retryCount, context) =>
+                {
+                    Console.WriteLine($"Retry {retryCount} encountered an error: {exception.Message}. Waiting {timeSpan} before next retry.");
+                });
+
+                await retryPolicy.ExecuteAsync(async () =>
+                {
+                    using var scope = _scopeFactory.CreateScope();
+                    var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
+                    await mediat.Send(request!);
+                });
             };
 
             channel.BasicConsume(
@@ -94,15 +107,27 @@ namespace Clinica.Doctors.Worker
 
             var updateDoctor = new EventingBasicConsumer(channel);
 
-            updateDoctor.Received += (sender, eventArgs) =>
+            updateDoctor.Received += async (sender, eventArgs) =>
             {
                 var body = eventArgs.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
 
                 var request = JsonConvert.DeserializeObject<UpdateDoctorCommand>(message);
-                using var scope = _scopeFactory.CreateScope();
-                var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
-                mediat.Send(request!);
+                var retryPolicy = Policy
+                .Handle<Exception>()
+                .WaitAndRetryAsync(5, retryAttempt =>
+                TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                (exception, timeSpan, retryCount, context) =>
+                {
+                    Console.WriteLine($"Retry {retryCount} encountered an error: {exception.Message}. Waiting {timeSpan} before next retry.");
+                });
+
+                await retryPolicy.ExecuteAsync(async () =>
+                {
+                    using var scope = _scopeFactory.CreateScope();
+                    var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
+                    await mediat.Send(request!);
+                });
             };
 
             channel.BasicConsume(
@@ -124,15 +149,27 @@ namespace Clinica.Doctors.Worker
 
             var deleteDoctor = new EventingBasicConsumer(channel);
 
-            deleteDoctor.Received += (sender, eventArgs) =>
+            deleteDoctor.Received += async (sender, eventArgs) =>
             {
                 var body = eventArgs.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
 
                 var request = JsonConvert.DeserializeObject<SoftDeleteDoctorCommand>(message);
-                using var scope = _scopeFactory.CreateScope();
-                var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
-                mediat.Send(request!);
+                var retryPolicy = Policy
+                .Handle<Exception>()
+                .WaitAndRetryAsync(5, retryAttempt =>
+                TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                (exception, timeSpan, retryCount, context) =>
+                {
+                    Console.WriteLine($"Retry {retryCount} encountered an error: {exception.Message}. Waiting {timeSpan} before next retry.");
+                });
+
+                await retryPolicy.ExecuteAsync(async () =>
+                {
+                    using var scope = _scopeFactory.CreateScope();
+                    var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
+                    await mediat.Send(request!);
+                });
             };
 
             channel.BasicConsume(
@@ -154,15 +191,27 @@ namespace Clinica.Doctors.Worker
 
             var createSpecialty = new EventingBasicConsumer(channel);
 
-            createSpecialty.Received += (sender, eventArgs) =>
+            createSpecialty.Received += async (sender, eventArgs) =>
             {
                 var body = eventArgs.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
 
                 var request = JsonConvert.DeserializeObject<CreateSpecialtyCommand>(message);
-                using var scope = _scopeFactory.CreateScope();
-                var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
-                mediat.Send(request!);
+                var retryPolicy = Policy
+                .Handle<Exception>()
+                .WaitAndRetryAsync(5, retryAttempt =>
+                TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                (exception, timeSpan, retryCount, context) =>
+                {
+                    Console.WriteLine($"Retry {retryCount} encountered an error: {exception.Message}. Waiting {timeSpan} before next retry.");
+                });
+
+                await retryPolicy.ExecuteAsync(async () =>
+                {
+                    using var scope = _scopeFactory.CreateScope();
+                    var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
+                    await mediat.Send(request!);
+                });
             };
 
             channel.BasicConsume(
@@ -184,51 +233,33 @@ namespace Clinica.Doctors.Worker
 
             var updateSpecialty = new EventingBasicConsumer(channel);
 
-            updateSpecialty.Received += (sender, eventArgs) =>
+            updateSpecialty.Received += async (sender, eventArgs) =>
             {
                 var body = eventArgs.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
 
                 var request = JsonConvert.DeserializeObject<UpdateSpecialtyCommand>(message);
-                using var scope = _scopeFactory.CreateScope();
-                var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
-                mediat.Send(request!);
+                var retryPolicy = Policy
+                .Handle<Exception>()
+                .WaitAndRetryAsync(5, retryAttempt =>
+                TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                (exception, timeSpan, retryCount, context) =>
+                {
+                    Console.WriteLine($"Retry {retryCount} encountered an error: {exception.Message}. Waiting {timeSpan} before next retry.");
+                });
+
+                await retryPolicy.ExecuteAsync(async () =>
+                {
+                    using var scope = _scopeFactory.CreateScope();
+                    var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
+                    await mediat.Send(request!);
+                });
             };
 
             channel.BasicConsume(
                         queue: MessageConstants.specialty_update,
                         autoAck: true,
                         consumer: updateSpecialty
-                        );
-        }
-
-        private void DeleteSpecialty(IModel channel)
-        {
-            channel.QueueDeclare(
-                        queue: MessageConstants.specialty_delete,
-                        durable: false,
-                        exclusive: false,
-                        autoDelete: false,
-                        arguments: null
-                        );
-
-            var deleteSpecialty = new EventingBasicConsumer(channel);
-
-            deleteSpecialty.Received += (sender, eventArgs) =>
-            {
-                var body = eventArgs.Body.ToArray();
-                var message = Encoding.UTF8.GetString(body);
-
-                var request = JsonConvert.DeserializeObject<SoftDeleteSpecialtyCommand>(message);
-                using var scope = _scopeFactory.CreateScope();
-                var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
-                mediat.Send(request!);
-            };
-
-            channel.BasicConsume(
-                        queue: MessageConstants.specialty_delete,
-                        autoAck: true,
-                        consumer: deleteSpecialty
                         );
         }
     }

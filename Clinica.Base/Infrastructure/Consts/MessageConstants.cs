@@ -19,5 +19,11 @@
         public const string specialty_update = nameof(specialty_update);
 
         public const string specialty_delete = nameof(specialty_delete);
+
+        public const string scheduling_create = nameof(scheduling_create);
+
+        public const string scheduling_update = nameof(scheduling_update);
+
+        public const string clinic_mail_service = nameof(clinic_mail_service);
     }
 }

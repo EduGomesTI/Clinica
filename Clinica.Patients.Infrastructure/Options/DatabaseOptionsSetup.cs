@@ -5,7 +5,6 @@ namespace Clinica.Patients.Infrastructure.Options
 {
     public sealed class DatabaseOptionsSetup : IConfigureOptions<DatabaseOptions>
     {
-   
         private readonly IConfiguration _configuration;
         private const string ConfigurationSectionName = "DatabaseOptions";
 

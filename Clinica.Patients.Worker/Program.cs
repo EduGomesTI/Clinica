@@ -1,10 +1,9 @@
+using System.Reflection;
 using Clinica.Base.Infrastructure.Options;
 using Clinica.Patients.Infrastructure;
 using Clinica.Patients.Infrastructure.Options;
 using Clinica.Patients.Worker;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddHostedService<Worker>();

@@ -3,12 +3,12 @@ using FluentValidation;
 
 namespace Clinica.Main.Application.Patients.Validators
 {
-    internal class CreatePatientCommandValidator : AbstractValidator<CreatePatientCommand>
+    internal sealed class CreatePatientCommandValidator : AbstractValidator<CreatePatientCommand>
     {
         public CreatePatientCommandValidator()
         {
             RuleFor(x => x.Name)
-                .NotEmpty()                
+                .NotEmpty()
                 .WithMessage("Nome é obrigatório")
                 .MaximumLength(50)
                 .WithMessage("Nome nãoo pode ter mais que 50 caracteres");
@@ -20,7 +20,7 @@ namespace Clinica.Main.Application.Patients.Validators
                 .WithMessage("E-mail não pode ter mais que 50 caracteres");
             RuleFor(x => x.Phone)
                 .NotEmpty()
-                .WithMessage("Telefone é obrigatório");                
+                .WithMessage("Telefone é obrigatório");
             RuleFor(x => x.BirthDate)
                 .NotNull()
                 .WithMessage("Data de nascimento é obrigatória");

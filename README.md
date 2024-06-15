@@ -19,7 +19,7 @@ consultas. Estas notificações podem ser via e-mail.
 - O médico confirma a consulta na agenda e o status no agendamento é alterado.
 - Cada consulta tem uma duração fixa de 30 minutos.
 - O padrão para exibição do horário das consultas é xxhxx, ex: 07h30, 18h00, etc.
-- O horário para agendamento de consultas é de Segunda a Sábado das 07h00 até às 21h00.
+- O horário para agendamento de consultas é de Segunda a Sábado das 08h00 até às 20h00.
 - UMa consulta não pode ser excluída, apenas cancelada.
 - O endereço dos pacientes será simplificado.
 

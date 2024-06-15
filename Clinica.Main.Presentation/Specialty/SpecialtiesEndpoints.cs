@@ -64,13 +64,6 @@ namespace Clinica.Main.Presentation.Specialty
 
                 return Results.Ok(response);
             }).WithMetadata(new ProducesResponseTypeAttribute(StatusCodes.Status200OK));
-
-            app.MapPatch("/softDelete", async (SoftDeleteSpecialtyCommand request, ISender sender) =>
-            {
-                var response = await sender.Send(request);
-
-                return Results.Ok(response);
-            }).WithMetadata(new ProducesResponseTypeAttribute(StatusCodes.Status200OK));
         }
     }
 }

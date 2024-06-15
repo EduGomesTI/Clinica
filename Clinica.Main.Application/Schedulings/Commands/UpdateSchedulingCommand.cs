@@ -5,5 +5,6 @@ namespace Clinica.Main.Application.Schedulings.Commands
 {
     public sealed record UpdateSchedulingCommand(
         Guid Id,
-        string Status) : IRequest<ValueResult>;
+        string Status,
+        DateTime DateScheduling) : IRequest<ValueResult>;
 }

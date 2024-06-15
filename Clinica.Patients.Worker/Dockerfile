@@ -9,8 +9,9 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Clinica.Patients.Worker/Clinica.Patients.Worker.csproj", "Clinica.Patients.Worker/"]
 COPY ["Clinica.Base/Clinica.Base.csproj", "Clinica.Base/"]
-COPY ["Clinica.Patients.Infrastructure/Clinica.Patients.Infrastructure.csproj", "Clinica.Patients.Infrastructure/"]
+COPY ["Clinica.Patients.Application/Clinica.Patients.Application.csproj", "Clinica.Patients.Application/"]
 COPY ["Clinica.Patients.Domain/Clinica.Patients.Domain.csproj", "Clinica.Patients.Domain/"]
+COPY ["Clinica.Patients.Infrastructure/Clinica.Patients.Infrastructure.csproj", "Clinica.Patients.Infrastructure/"]
 RUN dotnet restore "./Clinica.Patients.Worker/./Clinica.Patients.Worker.csproj"
 COPY . .
 WORKDIR "/src/Clinica.Patients.Worker"

@@ -1,5 +1,6 @@
 ﻿using Clinica.Base.Application;
 using Clinica.Base.Infrastructure;
+using Clinica.Base.Infrastructure.Brokes.RabbitMq;
 using Clinica.Doctors.Domain.Repositories;
 using Clinica.Doctors.Infrastructure.Options;
 using Clinica.Doctors.Infrastructure.Persistence;
@@ -38,6 +39,8 @@ namespace Clinica.Doctors.Infrastructure
             services.AddScoped<ISpecialtyRepository, SpecialtyRepository>();
 
             services.AddScoped<IUnitOfWork<DoctorDbContext>, UnitOfWork<DoctorDbContext>>();
+
+            services.AddScoped<IMessageService, MessageService>();
 
             return services;
         }

@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Clinica.Base\Clinica.Base.csproj" />
+    <ProjectReference Include="..\Clinica.Main.Domain\Clinica.Main.Domain.csproj" />
+    <ProjectReference Include="..\Clinica.Patients.Domain\Clinica.Patients.Domain.csproj" />
   </ItemGroup>
 
 </Project>

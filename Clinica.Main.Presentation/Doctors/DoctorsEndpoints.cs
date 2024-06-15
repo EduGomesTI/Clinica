@@ -23,6 +23,14 @@ namespace Clinica.Main.Presentation.Doctors
 
         public override void AddRoutes(IEndpointRouteBuilder app)
         {
+            app.MapGet("/getSchedule/{id}", async (Guid id, ISender sender) =>
+            {
+                GetDoctorScheduleByDoctorIdQuery request = new(id);
+                var response = await sender.Send(request);
+
+                return Results.Ok(response);
+            }).WithMetadata(new ProducesResponseTypeAttribute(typeof(GetDoctorScheduleResponse), StatusCodes.Status200OK));
+
             app.MapGet("/getAll/{isPaged}/{pageStart}/{pageSize}",
                 async (string isPaged, int pageStart, int pageSize, ISender sender) =>
                 {
@@ -44,7 +52,7 @@ namespace Clinica.Main.Presentation.Doctors
 
             app.MapGet("/getById/{id}", async (Guid id, ISender sender) =>
             {
-                GetDoctorById query = new(id);
+                GetDoctorScheduleByDoctorIdQuery query = new(id);
 
                 var response = await sender.Send(query);
 

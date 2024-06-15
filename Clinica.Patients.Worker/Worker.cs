@@ -4,6 +4,7 @@ using Clinica.Main.Application.Patients.Commands;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -60,15 +61,27 @@ namespace Clinica.Patients.Worker
 
             var deletePatient = new EventingBasicConsumer(channel);
 
-            deletePatient.Received += (sender, eventArgs) =>
+            deletePatient.Received += async (sender, eventArgs) =>
             {
                 var body = eventArgs.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
 
                 var request = JsonConvert.DeserializeObject<SoftDeletePatientCommand>(message);
-                using var scope = _scopeFactory.CreateScope();
-                var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
-                mediat.Send(request!);
+                var retryPolicy = Policy
+                .Handle<Exception>()
+                .WaitAndRetryAsync(5, retryAttempt =>
+                TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                (exception, timeSpan, retryCount, context) =>
+                {
+                    Console.WriteLine($"Retry {retryCount} encountered an error: {exception.Message}. Waiting {timeSpan} before next retry.");
+                });
+
+                await retryPolicy.ExecuteAsync(async () =>
+                {
+                    using var scope = _scopeFactory.CreateScope();
+                    var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
+                    await mediat.Send(request!);
+                });
             };
 
             channel.BasicConsume(
@@ -90,15 +103,27 @@ namespace Clinica.Patients.Worker
 
             var updatePatient = new EventingBasicConsumer(channel);
 
-            updatePatient.Received += (sender, eventArgs) =>
+            updatePatient.Received += async (sender, eventArgs) =>
             {
                 var body = eventArgs.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
 
                 var request = JsonConvert.DeserializeObject<UpdatePatientCommand>(message);
-                using var scope = _scopeFactory.CreateScope();
-                var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
-                mediat.Send(request!);
+                var retryPolicy = Policy
+                .Handle<Exception>()
+                .WaitAndRetryAsync(5, retryAttempt =>
+                TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                (exception, timeSpan, retryCount, context) =>
+                {
+                    Console.WriteLine($"Retry {retryCount} encountered an error: {exception.Message}. Waiting {timeSpan} before next retry.");
+                });
+
+                await retryPolicy.ExecuteAsync(async () =>
+                {
+                    using var scope = _scopeFactory.CreateScope();
+                    var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
+                    await mediat.Send(request!);
+                });
             };
 
             channel.BasicConsume(
@@ -120,15 +145,16 @@ namespace Clinica.Patients.Worker
 
             var createPatient = new EventingBasicConsumer(channel);
 
-            createPatient.Received += (sender, eventArgs) =>
+            createPatient.Received += async (sender, eventArgs) =>
             {
                 var body = eventArgs.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
 
                 var request = JsonConvert.DeserializeObject<CreatePatientCommand>(message);
+
                 using var scope = _scopeFactory.CreateScope();
                 var mediat = scope.ServiceProvider.GetRequiredService<ISender>();
-                mediat.Send(request!);
+                await mediat.Send(request!);
             };
 
             channel.BasicConsume(

@@ -36,6 +36,7 @@ namespace Clinica.Main.Application
             services.AddScoped<IValidator<CreateDoctorCommand>, CreateDoctorCommandValidator>();
             services.AddScoped<IValidator<UpdateDoctorCommand>, UpdateDoctorCommandValidator>();
             services.AddScoped<IValidator<SoftDeleteDoctorCommand>, SoftDeleteDoctorCommandValidator>();
+            services.AddScoped<IValidator<LoginPatientCommand>, LoginPatientCommandValidator>();
 
             services.AddScoped<IValidator<CreatePatientCommand>, CreatePatientCommandValidator>();
             services.AddScoped<IValidator<UpdatePatientCommand>, UpdatePatientCommandValidator>();
@@ -46,7 +47,6 @@ namespace Clinica.Main.Application
 
             services.AddScoped<IValidator<CreateSpecialtyCommand>, CreateSpecialtyCommandValidator>();
             services.AddScoped<IValidator<UpdateSpecialtyCommand>, UpdateSpecialtyCommandValidator>();
-            services.AddScoped<IValidator<SoftDeleteSpecialtyCommand>, SoftDeleteSpecialtyCommandValidator>();
 
             return services;
         }

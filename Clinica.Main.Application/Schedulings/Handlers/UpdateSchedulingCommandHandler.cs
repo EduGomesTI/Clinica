@@ -1,5 +1,6 @@
 ﻿using Clinica.Base.Domain;
 using Clinica.Base.Infrastructure.Brokes.RabbitMq;
+using Clinica.Base.Infrastructure.Consts;
 using Clinica.Main.Application.Schedulings.Commands;
 using FluentValidation;
 using MediatR;
@@ -9,7 +10,7 @@ namespace Clinica.Main.Application.Schedulings.Handlers
 {
     internal sealed class UpdateSchedulingCommandHandler : IRequestHandler<UpdateSchedulingCommand, ValueResult>
     {
-        private const string QUEUE = "update-scheduling";
+        private const string QUEUE = MessageConstants.scheduling_update;
         private readonly ILogger<UpdateSchedulingCommandHandler> _logger;
         private readonly IMessageService _message;
         private readonly IValidator<UpdateSchedulingCommand> _validator;

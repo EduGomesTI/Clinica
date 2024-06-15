@@ -1,5 +1,7 @@
 using Clinica.Base.Infrastructure.Options;
 using Clinica.Main.Application;
+using Clinica.Main.Infrastructure;
+using Clinica.Main.Infrastructure.Options;
 using Clinica.Main.Presentation;
 using Clinica.Main.WebApi.Extensions;
 
@@ -12,9 +14,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.ConfigureOptions<RabbitMqOptionsSetup>();
 
+builder.Services.ConfigureOptions<DatabaseOptionsSetup>();
+
 builder.Services
     .AddPresentation()
     .AddApplication()
+    .AddInfrastructure()
     .AddRabbitMqExtension();
 
 builder.Services.AddHealthChecks();

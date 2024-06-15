@@ -3,10 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Clinica.Base.Infrastructure
 {
-    public class UnitOfWork<TDbContext> : IUnitOfWork<TDbContext>, IDisposable where TDbContext : DbContext
+    public class UnitOfWork<TDbContext> : IUnitOfWork<TDbContext> where TDbContext : DbContext
     {
         private readonly TDbContext _context;
-        private bool _disposed;
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         public UnitOfWork(TDbContext context)
@@ -37,33 +36,6 @@ namespace Clinica.Base.Infrastructure
             {
                 // Handle other errors here
                 throw new InvalidOperationException("An error occurred while saving changes", ex);
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    _semaphore.Wait();
-                    try
-                    {
-                        _context.Dispose();
-                    }
-                    finally
-                    {
-                        _semaphore.Release();
-                    }
-                }
-
-                _disposed = true;
             }
         }
     }

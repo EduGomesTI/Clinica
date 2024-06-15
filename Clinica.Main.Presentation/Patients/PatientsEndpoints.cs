@@ -23,6 +23,17 @@ namespace Clinica.Main.Presentation.Patients
 
         public override void AddRoutes(IEndpointRouteBuilder app)
         {
+            app.MapPost("/login", async (LoginPatientCommand request, ISender sender) =>
+            {
+                var response = await sender.Send(request);
+
+                if (response.ErrorDetails!.Count > 0)
+                    return Results.BadRequest(response.ErrorDetails);
+
+                return Results.Ok(response);
+            })
+                .WithMetadata(new ProducesResponseTypeAttribute(typeof(LoginPatientResponse), StatusCodes.Status200OK));
+
             app.MapGet("/getAll/{isPaged}/{pageStart}/{pageSize}",
                 async (string isPaged, int pageStart, int pageSize, ISender sender) =>
                 {
@@ -39,8 +50,12 @@ namespace Clinica.Main.Presentation.Patients
 
                     var response = await sender.Send(query);
 
+                    if (response.ErrorDetails!.Count > 0)
+                        return Results.BadRequest(response.ErrorDetails);
+
                     return Results.Ok(response);
-                }).WithMetadata(new ProducesResponseTypeAttribute(typeof(IEnumerable<GetPatientResponse>), StatusCodes.Status200OK));
+                })
+                .WithMetadata(new ProducesResponseTypeAttribute(typeof(IEnumerable<GetPatientResponse>), StatusCodes.Status200OK));
 
             app.MapGet("/getById/{id}", async (Guid id, ISender sender) =>
             {
@@ -48,29 +63,45 @@ namespace Clinica.Main.Presentation.Patients
 
                 var response = await sender.Send(query);
 
+                if (response.ErrorDetails!.Count > 0)
+                    return Results.BadRequest(response.ErrorDetails);
+
                 return Results.Ok(response);
-            }).WithMetadata(new ProducesResponseTypeAttribute(typeof(GetPatientResponse), StatusCodes.Status200OK));
+            })
+                .WithMetadata(new ProducesResponseTypeAttribute(typeof(GetPatientResponse), StatusCodes.Status200OK));
 
             app.MapPost("/create", async (CreatePatientCommand request, ISender sender) =>
             {
                 var response = await sender.Send(request);
 
+                if (response.ErrorDetails!.Count > 0)
+                    return Results.BadRequest(response.ErrorDetails);
+
                 return Results.Ok(response);
-            }).WithMetadata(new ProducesResponseTypeAttribute(StatusCodes.Status200OK));
+            })
+                .WithMetadata(new ProducesResponseTypeAttribute(StatusCodes.Status200OK));
 
             app.MapPatch("/update", async (UpdatePatientCommand request, ISender sender) =>
             {
                 var response = await sender.Send(request);
 
+                if (response.ErrorDetails!.Count > 0)
+                    return Results.BadRequest(response.ErrorDetails);
+
                 return Results.Ok(response);
-            }).WithMetadata(new ProducesResponseTypeAttribute(StatusCodes.Status200OK));
+            })
+                .WithMetadata(new ProducesResponseTypeAttribute(StatusCodes.Status200OK));
 
             app.MapPatch("/softDelete", async (SoftDeletePatientCommand request, ISender sender) =>
             {
                 var response = await sender.Send(request);
 
+                if (response.ErrorDetails!.Count > 0)
+                    return Results.BadRequest(response.ErrorDetails);
+
                 return Results.Ok(response);
-            }).WithMetadata(new ProducesResponseTypeAttribute(StatusCodes.Status200OK));
+            })
+                .WithMetadata(new ProducesResponseTypeAttribute(StatusCodes.Status200OK));
         }
     }
 }
