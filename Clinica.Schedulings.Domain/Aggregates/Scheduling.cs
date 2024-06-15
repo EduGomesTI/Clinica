@@ -70,7 +70,7 @@ namespace Clinica.Schedulings.Domain.Aggregates
             }
 
             Status = AppointmentStatus.Confirmed;
-            Observation = "Consulta confirmada com sucesso!";
+            Observation = $"Consulta confirmada com sucesso na data {DateScheduling}";
             return ValueResult<Scheduling>.Success(this);
         }
 
@@ -83,7 +83,7 @@ namespace Clinica.Schedulings.Domain.Aggregates
             }
 
             Status = AppointmentStatus.CancelledByPatient;
-            Observation = "Consulta cancelada pelo paciente!";
+            Observation = $"Consulta do dia {DateScheduling} cancelada pelo paciente!";
             return ValueResult<Scheduling>.Success(this);
         }
 
@@ -96,7 +96,7 @@ namespace Clinica.Schedulings.Domain.Aggregates
             }
 
             Status = AppointmentStatus.CancelledByDoctor;
-            Observation = "Consulta cancelada pelo médico!";
+            Observation = $"Consulta do dia {DateScheduling} cancelada pelo médico!";
             return ValueResult<Scheduling>.Success(this);
         }
 
@@ -108,7 +108,7 @@ namespace Clinica.Schedulings.Domain.Aggregates
             }
 
             Status = AppointmentStatus.Completed;
-            Observation = "Consulta realizada com sucesso!";
+            Observation = $"Consulta do dia {DateScheduling} realizada com sucesso!";
             return ValueResult<Scheduling>.Success(this);
         }
 
@@ -120,7 +120,7 @@ namespace Clinica.Schedulings.Domain.Aggregates
             }
 
             Status = AppointmentStatus.NoShow;
-            Observation = $"Paciente {PatientId} não compareceu à consulta.";
+            Observation = $"Você compareceu à consulta do dia {DateScheduling}.";
             return ValueResult<Scheduling>.Success(this);
         }
 

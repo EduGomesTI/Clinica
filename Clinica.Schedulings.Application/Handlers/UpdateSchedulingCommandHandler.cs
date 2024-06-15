@@ -62,6 +62,10 @@ namespace Clinica.Schedulings.Application.Handlers
                 case AppointmentStatus.Completed:
                     scheduling!.Complete();
                     break;
+
+                case AppointmentStatus.NoShow:
+                    scheduling!.NoShow();
+                    break;
             }
 
             _logger.LogWarning("Atualizar agendamento no banco.");
