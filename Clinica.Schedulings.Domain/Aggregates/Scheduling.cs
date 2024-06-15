@@ -77,7 +77,7 @@ namespace Clinica.Schedulings.Domain.Aggregates
 
         public ValueResult<Scheduling> Reschedule(DateTime newDate)
         {
-            var validStatuses = new[] { AppointmentStatus.Scheduled, AppointmentStatus.Confirmed };
+            var validStatuses = new[] { AppointmentStatus.Scheduled, AppointmentStatus.Confirmed, AppointmentStatus.ReScheduling };
             if (!validStatuses.Contains(Status))
             {
                 Observation = "Não foi possível remarcar a consulta. Ela não está mais agendada.";
@@ -98,7 +98,7 @@ namespace Clinica.Schedulings.Domain.Aggregates
 
         public ValueResult<Scheduling> CancelByPatient()
         {
-            var validStatuses = new[] { AppointmentStatus.Scheduled, AppointmentStatus.Confirmed };
+            var validStatuses = new[] { AppointmentStatus.Scheduled, AppointmentStatus.Confirmed, AppointmentStatus.ReScheduling };
             if (!validStatuses.Contains(Status))
             {
                 Observation = "Não foi possível que o paciente cancelasse a consulta. Ela não está mais agendada.";
@@ -112,7 +112,7 @@ namespace Clinica.Schedulings.Domain.Aggregates
 
         public ValueResult<Scheduling> CancelByDoctor()
         {
-            var validStatuses = new[] { AppointmentStatus.Scheduled, AppointmentStatus.Confirmed };
+            var validStatuses = new[] { AppointmentStatus.Scheduled, AppointmentStatus.Confirmed, AppointmentStatus.ReScheduling };
             if (!validStatuses.Contains(Status))
             {
                 Observation = "Não foi possível que o médico cancelasse a consulta. Ela não está mais agendada.";
@@ -126,9 +126,10 @@ namespace Clinica.Schedulings.Domain.Aggregates
 
         public ValueResult<Scheduling> Complete()
         {
-            if (Status != AppointmentStatus.Confirmed)
+            var validStatuses = new[] { AppointmentStatus.Confirmed, AppointmentStatus.ReScheduling };
+            if (!validStatuses.Contains(Status))
             {
-                Observation = $"Consulta na data {DateScheduling} não foi realizada.";
+                Observation = $"Não é possível realizar a consulta na data {DateScheduling}.";
                 return ValueResult<Scheduling>.Failure("Você só pode realizar uma consulta se ela estiver com o status 'Confirmado'");
             }
 
