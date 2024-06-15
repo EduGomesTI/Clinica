@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Schedulings\" />
+    <Folder Include="Specialty\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Clinica.Base\Clinica.Base.csproj" />
+    <ProjectReference Include="..\Clinica.Main.Application\Clinica.Main.Application.csproj" />
+    <ProjectReference Include="..\Clinica.Main.Domain\Clinica.Main.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
