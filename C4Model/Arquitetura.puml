@@ -1,0 +1,42 @@
+@startuml System_Context_Diagram
+
+!theme C4_sandstone from https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/themes
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!$ICONURL = "https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/v3.0.0/icons"
+!include $ICONURL/common.puml
+!include DEVICONS/postgresql.puml
+!include $ICONURL/devicons2/rabbitmq_original.puml
+!include FONTAWESOME/users.puml
+!include DEVICONS/dotnet.puml
+
+title Desenho de Arquitetura do Sistema de Agendamento de Consultas Médicas
+
+Person(customer, "Usuário", "Usuário do Sistema de Agendamento", $sprite=users)
+
+System_Boundary(clinica, "Sistema de Agendamento") {
+  Container(api,"API", ".Net", "Valida requests e retorna alguns dados", $sprite="dotnet")
+  ContainerDb(postgres, "Database", "Postgres", "Persiste todos os dados da Clinica", $sprite="postgresql")
+  ContainerQueue(rabbit, "Message", "RabbitMq", $sprite="rabbitmq_original")
+  Container(doctor,"Worker", ".Net", "Serviço de gerenciamento de Médicos", $sprite="dotnet")
+   Container(patient,"Worker", ".Net", "Serviço de gerenciamento de Pacientes", $sprite="dotnet")
+    Container(schedule,"Worker", ".Net", "Serviço de gerenciamento de Agendamentos de Consultas", $sprite="dotnet")
+     Container(email,"Worker", ".Net", "Serviço de envio de Emails", $sprite="dotnet")
+}
+
+Rel_D(customer, api, "Uses", "Rest/HTTPS")
+Rel_U(postgres, api, "Reads")
+Rel_L(api, rabbit, "AMPQ")
+Rel_D(rabbit, doctor, "AMPQ")
+Rel_D(rabbit, patient, "AMPQ")
+Rel_D(rabbit, schedule, "AMPQ")
+Rel_D(rabbit, email, "AMPQ")
+Rel(doctor, postgres, "Writes")
+Rel(patient, postgres, "Writes")
+Rel(schedule, postgres, "Writes")
+
+
+@enduml
